@@ -41,7 +41,6 @@ p a {
 .card, .btn-large, .sidenav {
 	background-image: url("./images/outlets.png");
 }
-
 @media screen and (max-width: 800px) {
 
 	nav .brand-logo {

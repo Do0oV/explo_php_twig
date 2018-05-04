@@ -1,11 +1,11 @@
 <?php
 
+//initialisation de twig
 require_once 'vendor/autoload.php';
 
 $loader = new Twig_Loader_Filesystem(__DIR__.'/templates');
 $twig = new Twig_Environment($loader, [
 	'cache' => false, // __DIR__. '/tmp'
-
 ]);
 
 // si le repertoire a été changé et si l'url ne contient pas de /../
@@ -53,26 +53,30 @@ if (isset($_GET['file'])) {
 
 //::UNIX_PATHS -> évite le mix entre \ et / dans les paths
 $iterator = new FilesystemIterator($dossier, FilesystemIterator::UNIX_PATHS); 
+
 $folders = [];
 $files = [];
 
+// on parcourt $dossier et pour chaque élément
 foreach($iterator as $element){
 
+	//on récupère les infos dont on a besoin pour affichage
 	$dir = $element->getPathname();
 	$name = $element->getFilename();
 	$infos = date('d F Y - H:i:s', filemtime($element));
-	//fileowner
 	$ownerinfo = posix_getpwuid(fileowner($element));
 	$owner = $ownerinfo['name'];
-	//fileperm
 	$perms = fileperms($element);
 
 	// si c'est un dossier
 	if ($element->isDir()) {
 
+		// compte le nombre d'éléments dans les dossiers
 		$nbFiles = (count(scandir($dir)) - 2);
+		// on assigne icone
 		$icon = './images/folder.png';
 
+		// on push toutes les infos dans un array $folder
 		array_push($folders, [
 			'name' => $name
 			,'dir' => $dir
@@ -84,16 +88,18 @@ foreach($iterator as $element){
 		]);
 	}
 
-		// si c'est un fichier
+	// si c'est un fichier
 	if ($element->isFile()) {
 
+		// récupère la taille du fichier
 		$size = formatBytes($element->getSize());
 
+		// on assigne une icone en fonction de l'extension du fichier
 		if(preg_match("/\.(gif|png|jpg|jpeg|svg)$/", $element)){
 
 			$icon = './images/jpg.png';				
 		}
-			// autre manière de forcer le download
+		
 		elseif (preg_match("/\.(mp3|flac|wav|wma)$/", $element)) {
 
 			$icon = './images/mp3.png';
@@ -119,6 +125,7 @@ foreach($iterator as $element){
 			$icon = './images/txt.png';
 		}
 
+		//on push toutes les infos nécessaires dans un array $file
 		array_push($files, [
 			'name' => $name
 			,'dir' => $dir
@@ -129,16 +136,15 @@ foreach($iterator as $element){
 			,'perms' => $perms
 		]);
 	}
-
 }
 
+// en fonction de l'affectation à la variable $page on va chercher les fichiers à loader
 switch ($page) {
 	case 'home':
 	echo $twig->render('home.twig', array(
 		'dossier' => $dossier
 		,'files' => $files
 		,'folders' => $folders
-
 	));
 	break;
 	case 'error':

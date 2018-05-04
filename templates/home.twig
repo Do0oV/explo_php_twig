@@ -1,58 +1,58 @@
 {% extends "base.twig" %}
 
-			{% block content %}
+{% block content %}
 
-			<div class="card-panel col s12 m6 offset-m3 grey lighten-1 black-text center current z-depth-3"><h5>{{ dossier }}/</h5></div><br><br>
+	<div class="card-panel col s12 m6 offset-m3 grey lighten-1 black-text center current z-depth-3"><h5>{{ dossier }}/</h5></div><br><br>
 
-			{% for folder in folders %}
+	{% for folder in folders %}
 
-			<div class="col s12 m6 xl4">
-				<div class="card horizontal grey darken-3 z-depth-3">
-					<div class="card-image valign-wrapper">
-						<img src="{{ folder.icon }}" alt="folderIcon">
-					</div>
-					<div class="card-stacked">
-						<div class="card-content valign-wrapper">
-							<p>
-								<a href="?dossier={{ folder.dir }}" class="white-text tooltipped" data-position="right" data-tooltip="Perms: {{ folder.perms }} // Owner : {{ folder.owner }}">{{ folder.name }}</a>
-								<br>
-								<a class="black-text files">{{ folder.nbFiles }} fichier(s)</a>
-								<br>
-								<a class="black-text files">{{ folder.infos }}</a>
-								<br>
-							</p>
-						</div>
+		<div class="col s12 m6 xl4">
+			<div class="card horizontal grey darken-3 z-depth-3">
+				<div class="card-image valign-wrapper">
+					<img src="{{ folder.icon }}" alt="folderIcon">
+				</div>
+				<div class="card-stacked">
+					<div class="card-content valign-wrapper">
+						<p>
+							<a href="?dossier={{ folder.dir }}" class="white-text tooltipped" data-position="right" data-tooltip="Perms: {{ folder.perms }} // Owner : {{ folder.owner }}">{{ folder.name }}</a>
+							<br>
+							<a class="black-text files">{{ folder.nbFiles }} fichier(s)</a>
+							<br>
+							<a class="black-text files">{{ folder.infos }}</a>
+							<br>
+						</p>
 					</div>
 				</div>
 			</div>
+		</div>
 
-			{% endfor %}
+	{% endfor %}
 
-			{% for file in files %}
+	{% for file in files %}
 
-			<div class="col s12 m6 xl4">
-				<div class="card horizontal grey darken-3 z-depth-3">
-					<div class="card-image valign-wrapper">
-						<img src="{{ file.icon }}" width="64" height="64" alt="fileIcon">
-					</div>
-					<div class="card-stacked">
-						<div class="card-content valign-wrapper">
-							<p>
-								<a href="?file={{ file.dir }}" class="white-text tooltipped" data-position="right" data-tooltip="Perms: {{ file.perms }} // Owner : {{ file.owner }}">{{ file.name }}</a>
+		<div class="col s12 m6 xl4">
+			<div class="card horizontal grey darken-3 z-depth-3">
+				<div class="card-image valign-wrapper">
+					<img src="{{ file.icon }}" width="64" height="64" alt="fileIcon">
+				</div>
+				<div class="card-stacked">
+					<div class="card-content valign-wrapper">
+						<p>
+							<a href="?file={{ file.dir }}" class="white-text tooltipped" data-position="right" data-tooltip="Perms: {{ file.perms }} // Owner : {{ file.owner }}">{{ file.name }}</a>
+							<br>
+							<span>
+								<a class="black-text files">{{ file.size }}</a>
 								<br>
-								<span>
-									<a class="black-text files">{{ file.size }}</a>
-									<br>
-									<a class="black-text files">{{ file.infos }}</a>
-									<br>
-								</span>
-							</p>
-						</div>
+								<a class="black-text files">{{ file.infos }}</a>
+								<br>
+							</span>
+						</p>
 					</div>
 				</div>
 			</div>
+		</div>
 
-			{% endfor %}
+	{% endfor %}
 
-			{% endblock %}
+{% endblock %}
 

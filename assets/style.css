@@ -1,0 +1,53 @@
+body {
+	background-color: #171717;
+	background-image: url("./images/outlets.png");
+	font-family: 'Roboto Condensed', sans-serif;
+}
+.sidenav a {
+	font-size: 2em;
+}
+p {
+	word-break: break-all;
+}
+p:hover {
+	opacity: 0.5;
+}
+p a {
+	font-size: 1.20em;
+}
+.row {
+	margin-top: 5%;
+}
+.current {
+	margin-bottom: 5%;
+}
+.card-image img{
+	padding-left: 0.5em;
+}
+.files {
+	font-size: 0.875em;
+	font-style: italic;
+}
+.horizontal {
+	height: 100px;
+}
+.button a {
+	font-weight: bold;
+	margin-right: -20px;
+}
+.card, .btn-large, .card-panel {
+	border-radius: 10px;
+}
+.card, .btn-large {
+	background-image: url("./images/outlets.png");
+}
+
+@media screen and (max-width: 640px) {
+
+	nav .brand-logo {
+		font-size: 1.3em;
+	}
+	p a {
+		font-size: 1em;
+	}
+}

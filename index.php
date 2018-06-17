@@ -50,92 +50,102 @@ if (isset($_GET['file'])) {
 		$page = 'error';
 	}
 }
+if (is_dir ($dossier )) {
 
 //::UNIX_PATHS -> évite le mix entre \ et / dans les paths
-$iterator = new FilesystemIterator($dossier, FilesystemIterator::UNIX_PATHS); 
+	$iterator = new FilesystemIterator($dossier, FilesystemIterator::UNIX_PATHS); 
 
-$folders = [];
-$files = [];
+	$folders = [];
+	$files = [];
 
 // on parcourt $dossier et pour chaque élément
-foreach($iterator as $element){
+	foreach($iterator as $element){
 
 	//on récupère les infos dont on a besoin pour affichage
-	$dir = $element->getPathname();
-	$name = $element->getFilename();
-	$infos = date('d F Y - H:i:s', filemtime($element));
+		$dir = $element->getPathname();
+		$name = $element->getFilename();
+		$infos = date('d F Y - H:i:s', filemtime($element));
+
+	//comment using Linux
 	$ownerinfo = posix_getpwuid(fileowner($element));
 	$owner = $ownerinfo['name'];
 	$perms = fileperms($element);
 
+	//uncomment on Wamp
+		// $owner = 'Unavailable';
+		// $perms = 'Unavailable';
+
 	// si c'est un dossier
-	if ($element->isDir()) {
+		if ($element->isDir()) {
 
 		// compte le nombre d'éléments dans les dossiers
-		$nbFiles = (count(scandir($dir)) - 2);
+			$nbFiles = (count(scandir($dir)) - 2);
 		// on assigne icone
-		$icon = './images/folder.png';
+			$icon = './images/folder.png';
 
 		// on push toutes les infos dans un array $folder
-		array_push($folders, [
-			'name' => $name
-			,'dir' => $dir
-			,'nbFiles' => $nbFiles
-			,'icon' => $icon
-			,'infos' => $infos
-			,'owner' => $owner
-			,'perms' => $perms
-		]);
-	}
+			array_push($folders, [
+				'name' => $name
+				,'dir' => $dir
+				,'nbFiles' => $nbFiles
+				,'icon' => $icon
+				,'infos' => $infos
+				,'owner' => $owner
+				,'perms' => $perms
+			]);
+		}
 
 	// si c'est un fichier
-	if ($element->isFile()) {
+		if ($element->isFile()) {
 
 		// récupère la taille du fichier
-		$size = formatBytes($element->getSize());
+			$size = formatBytes($element->getSize());
 
 		// on assigne une icone en fonction de l'extension du fichier
-		if(preg_match("/\.(gif|png|jpg|jpeg|svg)$/", $element)){
+			if(preg_match("/\.(gif|png|jpg|jpeg|svg)$/", $element)){
 
-			$icon = './images/jpg.png';				
-		}
-		
-		elseif (preg_match("/\.(mp3|flac|wav|wma)$/", $element)) {
+				$icon = './images/jpg.png';				
+			}
+			
+			elseif (preg_match("/\.(mp3|flac|wav|wma)$/", $element)) {
 
-			$icon = './images/mp3.png';
+				$icon = './images/mp3.png';
 
-		}elseif (preg_match("/\.(mp4|mkv|avi|webm|ogg|mpg|mpeg|mp2|mpv|m4p|m4v|mpe|flv)$/", $element)) {
+			}elseif (preg_match("/\.(mp4|mkv|avi|webm|ogg|mpg|mpeg|mp2|mpv|m4p|m4v|mpe|flv)$/", $element)) {
 
-			$icon = './images/mpg.png';
+				$icon = './images/mpg.png';
 
-		}elseif (preg_match("/\.(pdf)$/", $element)) {
+			}elseif (preg_match("/\.(pdf)$/", $element)) {
 
-			$icon = './images/pdf.png';
+				$icon = './images/pdf.png';
 
-		}elseif (preg_match("/\.(html|php|js|xml|htm|mpg|css)$/", $element)) {
+			}elseif (preg_match("/\.(html|php|js|xml|htm|mpg|css)$/", $element)) {
 
-			$icon = './images/xml.png';
+				$icon = './images/xml.png';
 
-		}elseif (preg_match("/\.(rar|tar|zip|7z)$/", $element)) {
+			}elseif (preg_match("/\.(rar|tar|zip|7z)$/", $element)) {
 
-			$icon = './images/zip.png';
+				$icon = './images/zip.png';
 
-		}else{
+			}else{
 
-			$icon = './images/txt.png';
-		}
+				$icon = './images/txt.png';
+			}
 
 		//on push toutes les infos nécessaires dans un array $file
-		array_push($files, [
-			'name' => $name
-			,'dir' => $dir
-			,'size' => $size
-			,'icon' => $icon
-			,'infos' => $infos
-			,'owner' => $owner
-			,'perms' => $perms
-		]);
+			array_push($files, [
+				'name' => $name
+				,'dir' => $dir
+				,'size' => $size
+				,'icon' => $icon
+				,'infos' => $infos
+				,'owner' => $owner
+				,'perms' => $perms
+			]);
+		}
 	}
+}else{
+	$page = 'error';
 }
 
 // en fonction de l'affectation à la variable $page on va chercher les fichiers à loader

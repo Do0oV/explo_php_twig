@@ -2,6 +2,6 @@
 
 ACS project
 
-PHP Files explorer
+PHP Files explorer with forced download
 
 Require Twig
